@@ -1,0 +1,28 @@
+version: '3'
+services:
+    postgres:
+        image: 'postgres:latest'
+    redis:
+        image: 'redis:latest'
+    nginx:
+        image: 'mohsinejaz/project-fib-nginx:latest'
+        restart: always
+        ports:
+            - '3050:80'
+    api:
+        image: 'mohsinejaz/project-fib-server:latest'
+        environment: 
+            - REDIS_HOST=redis
+            - REDIS_PORT=6379
+            - PGUSER=postgres
+            - PGHOST=postgres
+            - PGDATABASE=postgres
+            - PGPASSWORD=postgres_password
+            - PGPORT=5432
+    client:
+        image: 'mohsinejaz/project-fib-client:latest'
+    worker:
+        image: 'mohsinejaz/project-fib-worker:latest'
+        environment:
+            - REDIS_HOST=redis
+            - REDIS_PORT=6379 
